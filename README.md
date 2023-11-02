@@ -1,4 +1,4 @@
-# Catakyst SD-WAN Python SDK Examples
+# Catalyst SD-WAN Python SDK Examples
 
 vManage client is a package for creating simple and parallel automatic requests via official vManage API. It is intended to serve as a multiple session handler (provider, provider as a tenant, tenant). The library is not dependent on environment which is being run in, you just need a connection to any vManage.
 
