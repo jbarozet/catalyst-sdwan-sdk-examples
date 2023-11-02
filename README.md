@@ -51,6 +51,7 @@ session.api.admin_tech.delete(admin_tech_file)
 devices = session.api.devices.get()
 speedtest = session.api.speedtest.speedtest(devices[0], devices[1])
 ```
+</details>
 
 ## A few examples
 
