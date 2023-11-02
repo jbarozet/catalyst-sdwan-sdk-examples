@@ -8,9 +8,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # CREATE SESSION
 
-url = "sandbox-sdwan-2.cisco.com"
-username = "devnetuser"
-password = "RG!_Yw919_83"
+
 
 session = create_vManageSession(url=url, username=username, password=password)
 print(session.about())
