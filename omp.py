@@ -7,9 +7,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # CREATE SESSION
 
-# url = "https://35.180.218.171"
-# username = "admin"
-# password = "C1sco12345"
 
 
 session = create_vManageSession(url=url, username=username, password=password)
