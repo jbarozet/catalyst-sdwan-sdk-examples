@@ -1,6 +1,7 @@
 import vmngclient
 from vmngclient.session import create_vManageSession
 import urllib3
+import os
 
 # Disable warnings because of no certificate on vManage
 # urllib3.disable_warnings()
@@ -20,5 +21,3 @@ print(session.about())
 
 alarms = session.api.alarms.get()
 print(alarms)
-
-template_api = 
