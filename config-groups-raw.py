@@ -63,7 +63,8 @@ def list_feature_profile_details():
     """Feature Profiles - Get specific profile details (including associated parcels)"""
 
     base = "dataservice/v1/feature-profile/sdwan/system/"
-    id = "a93d3266-1f6b-449e-bb9b-11cdb175c19c"
+    # id = "a93d3266-1f6b-449e-bb9b-11cdb175c19c"
+    id = input("Enter feature-profile ID ❯ ")
     url = base + id
     response = session.get(url)
     payload = response.json()

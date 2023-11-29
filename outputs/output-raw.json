@@ -1,0 +1,108 @@
+[
+  {
+    "id": "0ddae5ae-a865-4769-ae84-d749ad9f4f31",
+    "name": "Border",
+    "description": "Border Routers",
+    "source": "retail_workflow",
+    "solution": "sdwan",
+    "lastUpdatedBy": "jbarozet",
+    "lastUpdatedOn": 1700724300016,
+    "createdBy": "jbarozet",
+    "createdOn": 1700638794814,
+    "profiles": [
+      {
+        "id": "b7e80e9f-ac37-4096-b2a3-c166535f60b9",
+        "name": "Border_LAN",
+        "solution": "sdwan",
+        "type": "service",
+        "description": null,
+        "lastUpdatedBy": "jbarozet",
+        "lastUpdatedOn": 1700638929473,
+        "createdBy": "jbarozet",
+        "createdOn": 1700638793336
+      },
+      {
+        "id": "26f4dc95-b118-4c58-b6ff-a20e125f557e",
+        "name": "Border_WAN",
+        "solution": "sdwan",
+        "type": "transport",
+        "description": null,
+        "lastUpdatedBy": "jbarozet",
+        "lastUpdatedOn": 1700724300016,
+        "createdBy": "jbarozet",
+        "createdOn": 1700638791535
+      },
+      {
+        "id": "d63a6146-9aa6-48e7-b03c-f7f1f9fc8b57",
+        "name": "Border_Basic",
+        "solution": "sdwan",
+        "type": "system",
+        "description": null,
+        "lastUpdatedBy": "jbarozet",
+        "lastUpdatedOn": 1700726098024,
+        "createdBy": "jbarozet",
+        "createdOn": 1700638788851
+      }
+    ],
+    "version": 5,
+    "state": null,
+    "devices": null,
+    "numberOfDevices": 4,
+    "numberOfDevicesUpToDate": 4,
+    "topology": null,
+    "fullConfigCli": false
+  },
+  {
+    "id": "9b030d93-a5c5-424a-b205-73abc5b16ac6",
+    "name": "Edge",
+    "description": "",
+    "source": "retail_workflow",
+    "solution": "sdwan",
+    "lastUpdatedBy": "jbarozet",
+    "lastUpdatedOn": 1700722283912,
+    "createdBy": "jbarozet",
+    "createdOn": 1700577775585,
+    "profiles": [
+      {
+        "id": "f4226666-6779-4edd-a927-9e5ca1d861bc",
+        "name": "Edge_LAN",
+        "solution": "sdwan",
+        "type": "service",
+        "description": null,
+        "lastUpdatedBy": "jbarozet",
+        "lastUpdatedOn": 1700577775351,
+        "createdBy": "jbarozet",
+        "createdOn": 1700577773992
+      },
+      {
+        "id": "22a8d7e0-3c8b-4718-b1b8-e14c74c0b470",
+        "name": "Edge_WAN",
+        "solution": "sdwan",
+        "type": "transport",
+        "description": null,
+        "lastUpdatedBy": "jbarozet",
+        "lastUpdatedOn": 1700640807583,
+        "createdBy": "jbarozet",
+        "createdOn": 1700577771238
+      },
+      {
+        "id": "a93d3266-1f6b-449e-bb9b-11cdb175c19c",
+        "name": "Edge_Basic",
+        "solution": "sdwan",
+        "type": "system",
+        "description": null,
+        "lastUpdatedBy": "jbarozet",
+        "lastUpdatedOn": 1700726100268,
+        "createdBy": "jbarozet",
+        "createdOn": 1700577768079
+      }
+    ],
+    "version": 5,
+    "state": null,
+    "devices": null,
+    "numberOfDevices": 2,
+    "numberOfDevicesUpToDate": 2,
+    "topology": null,
+    "fullConfigCli": false
+  }
+]

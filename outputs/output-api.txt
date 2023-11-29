@@ -1,0 +1,37 @@
+
+
+Name: Border 
+ Profile:
+
+  FeatureProfile(id='b7e80e9f-ac37-4096-b2a3-c166535f60b9', 
+   name='Border_LAN', 
+   description=None, 
+   solution='sdwan', 
+   type=<ProfileType.SERVICE: 'service'>, 
+   created_by='jbarozet', 
+   last_updated_by='jbarozet', 
+   created_on=datetime.datetime(2023, 11, 22, 7, 39, 53, 336000, tzinfo=datetime.timezone.utc), 
+   last_updated_on=datetime.datetime(2023, 11, 22, 7, 42, 9, 473000, tzinfo=datetime.timezone.utc)), 
+ 
+  FeatureProfile(id='26f4dc95-b118-4c58-b6ff-a20e125f557e', 
+   name='Border_WAN', 
+   description=None, 
+   solution='sdwan', 
+   type=<ProfileType.TRANSPORT: 'transport'>, 
+   created_by='jbarozet', 
+   last_updated_by='jbarozet', 
+   created_on=datetime.datetime(2023, 11, 22, 7, 39, 51, 535000, tzinfo=datetime.timezone.utc), 
+   last_updated_on=datetime.datetime(2023, 11, 23, 7, 25, 0, 16000, tzinfo=datetime.timezone.utc)), 
+
+  FeatureProfile(id='d63a6146-9aa6-48e7-b03c-f7f1f9fc8b57', 
+   name='Border_Basic', 
+   description=None, 
+   solution='sdwan',
+   type=<ProfileType.SYSTEM: 'system'>, 
+   created_by='jbarozet', 
+   last_updated_by='jbarozet', 
+   created_on=datetime.datetime(2023, 11, 22, 7, 39, 48, 851000, tzinfo=datetime.timezone.utc), 
+   last_updated_on=datetime.datetime(2023, 11, 23, 7, 54, 58, 24000, tzinfo=datetime.timezone.utc))
+
+
+Name: Edge - Profile: [FeatureProfile(id='f4226666-6779-4edd-a927-9e5ca1d861bc', name='Edge_LAN', description=None, solution='sdwan', type=<ProfileType.SERVICE: 'service'>, created_by='jbarozet', last_updated_by='jbarozet', created_on=datetime.datetime(2023, 11, 21, 14, 42, 53, 992000, tzinfo=datetime.timezone.utc), last_updated_on=datetime.datetime(2023, 11, 21, 14, 42, 55, 351000, tzinfo=datetime.timezone.utc)), FeatureProfile(id='22a8d7e0-3c8b-4718-b1b8-e14c74c0b470', name='Edge_WAN', description=None, solution='sdwan', type=<ProfileType.TRANSPORT: 'transport'>, created_by='jbarozet', last_updated_by='jbarozet', created_on=datetime.datetime(2023, 11, 21, 14, 42, 51, 238000, tzinfo=datetime.timezone.utc), last_updated_on=datetime.datetime(2023, 11, 22, 8, 13, 27, 583000, tzinfo=datetime.timezone.utc)), FeatureProfile(id='a93d3266-1f6b-449e-bb9b-11cdb175c19c', name='Edge_Basic', description=None, solution='sdwan', type=<ProfileType.SYSTEM: 'system'>, created_by='jbarozet', last_updated_by='jbarozet', created_on=datetime.datetime(2023, 11, 21, 14, 42, 48, 79000, tzinfo=datetime.timezone.utc), last_updated_on=datetime.datetime(2023, 11, 23, 7, 55, 0, 268000, tzinfo=datetime.timezone.utc))]

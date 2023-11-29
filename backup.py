@@ -1,8 +1,9 @@
-import os
+from pathlib import Path
+from vmngclient.session import create_vManageSession
+from vmngclient.model.tenant import TenantExport
+from vmngclient.workflows.tenant_migration import migration_workflow
 
 import urllib3
-from vmngclient.dataclasses import Personality
-from vmngclient.session import create_vManageSession
 
 # Disable warnings because of no certificate on vManage
 # urllib3.disable_warnings()
@@ -10,13 +11,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 # ----------------------------------------------------------------------------------------------------
-# Create session
+# Create Session
 # ----------------------------------------------------------------------------------------------------
 #
-url = os.environ.get("vmanage_host")
-# vmanage_port = os.environ.get("vmanage_port")
-username = os.environ.get("vmanage_username")
-password = os.environ.get("vmanage_password")
+url = "10.62.190.144"
+username = "jbarozet"
+password = "tmetest123"
 
 if url is None or username is None or password is None:
     print(
@@ -36,30 +36,20 @@ if url is None or username is None or password is None:
     exit()
 
 session = create_vManageSession(url=url, username=username, password=password)
-print(session.about())
-
-
-# ----------------------------------------------------------------------------------------------------
-# Get the list of devices
-# ----------------------------------------------------------------------------------------------------
-
-devices = session.api.devices.get()
-
-# Filter vmanage devices
-vmanage = devices.filter(personality=Personality.VMANAGE).single_or_default()
-
-print("---------------------------------------------------------------------")
-print(
-    f"Hostname: {vmanage.hostname} - Load: {vmanage.cpu_load} - Board serial: {vmanage.board_serial}"
-)
-print("---------------------------------------------------------------------")
+print(f"Version: {session.about().version}")
+print(f"Application Version: {session.about().application_version}")
 
 # ----------------------------------------------------------------------------------------------------
-# Display the list of devices
+# Get the list of config_groups
 # ----------------------------------------------------------------------------------------------------
 
-for dev in devices:
-    print(f"{dev.hostname} - Load: {dev.cpu_load} - Board serial: {dev.board_serial}")
-    print(session.api.device_state.get_system_status(dev.id))
+origin_api = session.api.tenant_migration
+tenant_file = Path("./tenant.tar.gz")
+token_file = Path("./tenant-token.txt")
 
-# ---END--
+# export
+export_task = origin_api.export_tenant(tenant=tenant)
+remote_filename = export_task.wait_for_file()
+
+# download
+origin_api.download(export_path, remote_filename)

@@ -1,23 +1,12 @@
-from vmngclient.session import create_vManageSession
-import urllib3
-import os
+from session import create_session
 
-# Disable warnings because of no certificate on vManage
-# urllib3.disable_warnings()
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+# Create Session
+session = create_session()
 
-# CREATE SESSION
-
-url = os.environ.get("vmanage_host")
-# vmanage_port = os.environ.get("vmanage_port")
-username = os.environ.get("vmanage_username")
-password = os.environ.get("vmanage_password")
-
-session = create_vManageSession(url=url, username=username, password=password)
-print(session.about())
-
-# OMP PEERS
-
-deviceid = "10.10.1.15"
+# Get OMP peers
+# deviceid = "10.0.0.2"
+deviceid = input("Enter Device ID : ")
 omp_peers = session.api.omp.get_omp_peers(deviceid)
-print(omp_peers)
+
+for peer in omp_peers:
+    print(f"vsmart: {peer.peerIp} - state: {peer.state} - SiteId: {peer.siteId} ")
