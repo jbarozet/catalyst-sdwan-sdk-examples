@@ -1,7 +1,7 @@
 import os
-from vmngclient.session import create_vManageSession
-from vmngclient.session import vManageSession
+
 import urllib3
+from vmngclient.session import create_vManageSession, vManageSession
 
 # Disable warnings because of no certificate on vManage
 # urllib3.disable_warnings()
