@@ -1,5 +1,3 @@
-import os
-
 import click
 import tabulate
 from session import create_session

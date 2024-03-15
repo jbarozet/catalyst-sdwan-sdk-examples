@@ -2,8 +2,9 @@ import json
 import os
 
 import urllib3
-from vmngclient.dataclasses import Personality
-from vmngclient.session import create_vManageSession
+
+# from vmngclient.dataclasses import Personality
+from catalystwan.session import create_manager_session
 
 # Disable warnings because of no certificate on vManage
 # urllib3.disable_warnings()
@@ -15,7 +16,7 @@ url = os.environ.get("vmanage_host")
 user = os.environ.get("vmanage_user")
 password = os.environ.get("vmanage_password")
 
-session = create_vManageSession(url=url, username=user, password=password)
+session = create_manager_session(url=url, username=user, password=password)
 print(session.about())
 
 # RAW APIs

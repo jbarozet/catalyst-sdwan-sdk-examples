@@ -1,7 +1,7 @@
 import os
 
 import urllib3
-from vmngclient.session import create_vManageSession, vManageSession
+from catalystwan.session import ManagerSession, create_manager_session
 
 # Disable warnings because of no certificate on vManage
 # urllib3.disable_warnings()
@@ -9,12 +9,14 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 # Create vManage session
-def create_session() -> vManageSession:
+def create_session() -> ManagerSession:
     """Create vManage session"""
 
     url = os.environ.get("vmanage_host")
     user = os.environ.get("vmanage_user")
     password = os.environ.get("vmanage_password")
+
+    # print(f"vManage: {url}, user: {user}, password: {password}")
 
     if url is None or user is None or password is None:
         print(
@@ -33,11 +35,12 @@ def create_session() -> vManageSession:
         print("export vmanage_password=admin")
         exit()
 
-    session = create_vManageSession(url=url, username=user, password=password)
+    session = create_manager_session(url=url, username=user, password=password)
 
     print("---")
     print(f"vManage: {session.url}")
     print(f"Version: {session.about().version}")
+    print(f"API Version: {session.api_version}")
     print(f"Application Version: {session.about().application_version}")
     print("---")
 

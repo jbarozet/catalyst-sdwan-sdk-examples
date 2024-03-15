@@ -1,55 +1,69 @@
+import json
+import os
+from os.path import join
 from pathlib import Path
-from vmngclient.session import create_vManageSession
-from vmngclient.model.tenant import TenantExport
-from vmngclient.workflows.tenant_migration import migration_workflow
 
 import urllib3
+from catalystwan.api.config_group_api import ConfigGroupAPI, ConfigGroupResponsePayload
+
+from session import create_session
+
+
+def create_backup_dir():
+    workdir = "data/groups"
+    # os.mkdir(workdir)
+    # Check if workdir folder already exists. If yes, then stop backup process
+    workdir = join(os.path.abspath(os.getcwd()), workdir)
+    if os.path.isdir(workdir):
+        exit(
+            f"{workdir} folder is already in use. Please select a different workdir directory."
+        )
+
+
+def save_config_groups():
+    """
+    List specific config-group details
+    But do not list parcels
+    """
+
+    workdir = "data/groups"
+    base = "dataservice/v1/config-group/"
+    data = session.get(base).json()
+
+    for key in data:
+        config_group_id = key["id"]
+        config_group_name = key["name"]
+        tmp = config_group_name + ".json"
+        filename = join(workdir, tmp)
+        print(f"> Config Group ID: {config_group_name}")
+        url = base + config_group_id
+        config_group = session.get(url).json()
+        for item in config_group["profiles"]:
+            print(item["id"])
+        with open(filename, "w") as file:
+            json.dump(config_group, file, indent=4)
+
+
+def save_feature_profiles():
+    """
+    Feature Profiles - Get specific profile details
+    Including associated parcels
+    """
+
+    base = "dataservice/v1/feature-profile/sdwan/service/"
+    feature_profile_id = input("Enter feature-profile ID ❯ ")
+    url = base + feature_profile_id
+    data = session.get(url).json()
+    data_formatted = json.dumps(data, indent=4)
+    print(data_formatted)
+
 
 # Disable warnings because of no certificate on vManage
 # urllib3.disable_warnings()
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+# Create vManage session
+session = create_session()
 
-# ----------------------------------------------------------------------------------------------------
-# Create Session
-# ----------------------------------------------------------------------------------------------------
-#
-url = "10.62.190.144"
-username = "jbarozet"
-password = "tmetest123"
-
-if url is None or username is None or password is None:
-    print(
-        "For Windows Workstation, vManage details must be set via environment variables using below commands"
-    )
-    print("set vmanage_host=10.10.1.1")
-    print("set vmanage_port=8443")
-    print("set vmanage_username=admin")
-    print("set vmanage_password=admin")
-    print(
-        "For MAC OSX Workstation, vManage details must be set via environment variables using below commands"
-    )
-    print("export vmanage_host=10.10.1.1")
-    print("export vmanage_port=8443")
-    print("export vmanage_username=admin")
-    print("export vmanage_password=admin")
-    exit()
-
-session = create_vManageSession(url=url, username=username, password=password)
-print(f"Version: {session.about().version}")
-print(f"Application Version: {session.about().application_version}")
-
-# ----------------------------------------------------------------------------------------------------
-# Get the list of config_groups
-# ----------------------------------------------------------------------------------------------------
-
-origin_api = session.api.tenant_migration
-tenant_file = Path("./tenant.tar.gz")
-token_file = Path("./tenant-token.txt")
-
-# export
-export_task = origin_api.export_tenant(tenant=tenant)
-remote_filename = export_task.wait_for_file()
-
-# download
-origin_api.download(export_path, remote_filename)
+save_config_groups()
+save_feature_profiles()

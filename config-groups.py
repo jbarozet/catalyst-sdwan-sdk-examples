@@ -3,8 +3,8 @@ Catalyst SD-WAN Manager SDK - Config Groups and Feature Profiles
 """
 
 from session import create_session
-from vmngclient.api.config_group_api import ConfigGroupAPI
-from vmngclient.api.config_group_api import ConfigGroupResponsePayload
+from catalystwan.api.config_group_api import ConfigGroupAPI
+from catalystwan.api.config_group_api import ConfigGroupResponsePayload
 import urllib3
 
 # Disable warnings because of no certificate on vManage
@@ -16,6 +16,8 @@ session = create_session()
 
 # Get the list of config_groups
 config_groups = session.api.config_group.get()
+
+print(ConfigGroupAPI.get())
 
 # Display the list of config_groups
 for group in config_groups:

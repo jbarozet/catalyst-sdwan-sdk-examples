@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "sdwan-sdk-examples"
+version = "0.1.0"
+description = ""
+authors = ["Jean-Marc Barozet <jbarozet@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+catalystwan = "^0.31.0"
+click = "^8.1.7"
+urllib3 = "^2.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
