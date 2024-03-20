@@ -24,6 +24,7 @@ from catalystwan.api.config_group_api import ConfigGroupAPI, ConfigGroupResponse
 from session import create_session
 
 profile_id_table = []
+profile_id_dict = {}
 
 
 def create_backup_dir():
@@ -58,8 +59,10 @@ def save_config_groups():
         config_group = session.get(url).json()
         for item in config_group["profiles"]:
             profile_id = item["id"]
-            print(profile_id)
-            profile_id_table.append(profile_id)
+            profile_type = item["type"]
+            new_element = [profile_id, profile_type]
+            profile_id_table.append(new_element)
+            print(new_element)
         with open(filename, "w") as file:
             json.dump(config_group, file, indent=4)
     print(f"summary: {profile_id_table}")
@@ -72,17 +75,48 @@ def save_feature_profiles():
     """
 
     base = "dataservice/v1/feature-profile/sdwan/service/"
-    workdir = "data/feature_profiles"
+    workdir_cli = "data/feature_profiles/cli"
+    workdir_system = "data/feature_profiles/system"
+    workdir_transport = "data/feature_profiles/transport"
+    workdir_service = "data/feature_profiles/service"
     # feature_profile_id = input("Enter feature-profile ID ❯ ")
-    for profile_id in profile_id_table[:]:
+
+    for i in range(len(profile_id_table)):
+        profile_id = profile_id_table[i][0]
+        profile_type = profile_id_table[i][1]
+
+        match profile_type:
+            case "system":
+                workdir = workdir_system
+            case "transport":
+                workdir = workdir_transport
+            case "service":
+                workdir = workdir_service
+            case "cli":
+                workdir = workdir_cli
+            case _:
+                workdir = "data/feature_profiles"
+
         url = base + profile_id
         data = session.get(url).json()
         profile_name = data["profileName"]
-        print(f"--- Profile Name ❯ {profile_name}")
         tmp = profile_name + ".json"
+        print(
+            f"--- Profile Name ❯ {profile_name} - {profile_id} - {profile_type} - {workdir}"
+        )
         filename = join(workdir, tmp)
         with open(filename, "w") as file:
             json.dump(data, file, indent=4)
+
+    # for profile_id in profile_id_table[:]:
+    #     url = base + profile_id
+    #     data = session.get(url).json()
+    #     profile_name = data["profileName"]
+    #     print(f"--- Profile Name ❯ {profile_name}")
+    #     tmp = profile_name + ".json"
+    #     filename = join(workdir, tmp)
+    #     with open(filename, "w") as file:
+    #         json.dump(data, file, indent=4)
 
 
 def save_associated_devices():
