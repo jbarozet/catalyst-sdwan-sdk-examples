@@ -14,17 +14,20 @@
 #       policy_object
 
 import json
+import logging
 import os
+import sys
 from os.path import join
-from pathlib import Path
 
 import urllib3
 from catalystwan.api.config_group_api import ConfigGroupAPI, ConfigGroupResponsePayload
+from catalystwan.session import ManagerHTTPError
 
 from session import create_session
 
+logger = logging.getLogger("catalystwan")
 profile_id_table = []
-profile_id_dict = {}
+config_group_table = []
 
 
 def create_backup_dir():
@@ -45,18 +48,24 @@ def save_config_groups():
     Need to use the API for profiles to get the list of associated parcels
     """
 
-    workdir = "data/config_groups"
+    workdir = "data/config_groups/groups"
     base = "dataservice/v1/config-group/"
     data = session.get(base).json()
+
+    print("\n--- Saving Config Groups")
 
     for key in data:
         config_group_id = key["id"]
         config_group_name = key["name"]
+        new_element = [config_group_name, config_group_id, 0]
+        config_group_table.append(new_element)
+
         tmp = config_group_name + ".json"
         filename = join(workdir, tmp)
         print(f"> Config Group ID ❯ {config_group_name}")
         url = base + config_group_id
         config_group = session.get(url).json()
+
         for item in config_group["profiles"]:
             profile_id = item["id"]
             profile_type = item["type"]
@@ -65,7 +74,6 @@ def save_config_groups():
             print(new_element)
         with open(filename, "w") as file:
             json.dump(config_group, file, indent=4)
-    print(f"summary: {profile_id_table}")
 
 
 def save_feature_profiles():
@@ -79,7 +87,8 @@ def save_feature_profiles():
     workdir_system = "data/feature_profiles/system"
     workdir_transport = "data/feature_profiles/transport"
     workdir_service = "data/feature_profiles/service"
-    # feature_profile_id = input("Enter feature-profile ID ❯ ")
+
+    print("\n--- Saving Features Profiles")
 
     for i in range(len(profile_id_table)):
         profile_id = profile_id_table[i][0]
@@ -101,22 +110,12 @@ def save_feature_profiles():
         data = session.get(url).json()
         profile_name = data["profileName"]
         tmp = profile_name + ".json"
-        print(
-            f"--- Profile Name ❯ {profile_name} - {profile_id} - {profile_type} - {workdir}"
-        )
+
+        print(f"> Profile Name ❯ {profile_name} - {profile_id} - {profile_type}")
+
         filename = join(workdir, tmp)
         with open(filename, "w") as file:
             json.dump(data, file, indent=4)
-
-    # for profile_id in profile_id_table[:]:
-    #     url = base + profile_id
-    #     data = session.get(url).json()
-    #     profile_name = data["profileName"]
-    #     print(f"--- Profile Name ❯ {profile_name}")
-    #     tmp = profile_name + ".json"
-    #     filename = join(workdir, tmp)
-    #     with open(filename, "w") as file:
-    #         json.dump(data, file, indent=4)
 
 
 def save_associated_devices():
@@ -125,13 +124,67 @@ def save_associated_devices():
     'v1/config-group/{configGroupId}/device/associate'
     """
 
+    url_base = "dataservice/v1/config-group/"
+    url_end = "/device/associate"
+    workdir = "data/config_groups/associated"
 
-def config_group_values():
+    print("\n--- Saving associated devices")
+
+    for i in range(len(config_group_table)):
+        config_group_name = config_group_table[i][0]
+        config_group_id = config_group_table[i][1]
+
+        print(f"> Config Group ❯ {config_group_name} - {config_group_id}")
+
+        url = url_base + config_group_id + url_end
+        data = session.get(url).json()
+
+        # Check if there are associated devices
+        nb_devices = 0
+        for key in data["devices"]:
+            device_id = key["id"]
+            if device_id != "":
+                nb_devices = nb_devices + 1
+                print(f"device_id: {device_id}")
+
+        # Save number of devices associated with selected config-group
+        config_group_table[i][2] = nb_devices
+
+        # Save file only if there are devices
+        if nb_devices != 0:
+            tmp = config_group_name + ".json"
+            filename = join(workdir, tmp)
+            with open(filename, "w") as file:
+                json.dump(data, file, indent=4)
+
+
+def save_config_group_values():
     """
     'v1/config-group/{configGroupId}/device/variables'
-    store_path = ('config_groups', 'values')
-    store_file = '{item_name}.json'
     """
+
+    url_base = "dataservice/v1/config-group/"
+    url_end = "/device/variables"
+    workdir = "data/config_groups/values"
+
+    print("\n--- Saving device deployment values")
+
+    for i in range(len(config_group_table)):
+        config_group_name = config_group_table[i][0]
+        config_group_id = config_group_table[i][1]
+        config_group_devices = config_group_table[i][2]
+        url = url_base + config_group_id + url_end
+
+        print(
+            f"> Config Group ❯ {config_group_name} with {config_group_devices} associated"
+        )
+
+        if config_group_devices != 0:
+            data = session.get(url).json()
+            tmp = config_group_name + ".json"
+            filename = join(workdir, tmp)
+            with open(filename, "w") as file:
+                json.dump(data, file, indent=4)
 
 
 def save_automated_rules():
@@ -154,4 +207,6 @@ session = create_session()
 
 save_config_groups()
 save_feature_profiles()
+save_associated_devices()
+save_config_group_values()
 # save_automated_rules()
